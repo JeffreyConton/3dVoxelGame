@@ -3,12 +3,18 @@ from OpenGL.GL import *
 from OpenGL.GLU import *
 from world import World
 import math
+import os
+import sys
+
+
+def clear_console():
+    os.system('cls' if os.name == 'nt' else 'clear')
 
 
 def main():
     pygame.init()
     display = (800, 600)
-    pygame.display.set_mode(display, pygame.DOUBLEBUF | pygame.OPENGL)
+    pygame.display.set_mode(display, pygame.DOUBLEBUF | pygame.OPENGL | pygame.RESIZABLE)
     glEnable(GL_DEPTH_TEST)
 
     glMatrixMode(GL_PROJECTION)
@@ -76,7 +82,24 @@ def main():
         glRotatef(camera_rot[1], 0, 1, 0)
         glTranslatef(-camera_pos[0], -camera_pos[1], -camera_pos[2])
 
+        stats = {
+            'fps': clock.get_fps(),
+            'vertices': 0,
+            'chunks': 1,
+            'voxels': 0
+        }
+
         world.render()
+
+        stats['vertices'] = world.vertex_count
+        stats['voxels'] = world.voxel_count
+
+        clear_console()
+        print(f"FPS: {stats['fps']:.2f}")
+        print(f"Vertices: {stats['vertices']}")
+        print(f"Chunks: {stats['chunks']}")
+        print(f"Voxels: {stats['voxels']}")
+        sys.stdout.flush()
 
         pygame.display.flip()
         clock.tick(60)
