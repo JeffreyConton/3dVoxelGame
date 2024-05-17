@@ -86,13 +86,14 @@ def main():
         stats = {
             'fps': clock.get_fps(),
             'vertices': 0,
-            'chunks': 1,
+            'chunks': 0,
             'voxels': 0
         }
 
-        world.render()
+        world.render(camera_pos)
 
         stats['vertices'] = world.vertex_count
+        stats['chunks'] = len(world.chunks)
         stats['voxels'] = world.voxel_count
 
         clear_console()

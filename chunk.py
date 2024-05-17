@@ -55,6 +55,8 @@ class Chunk:
         if self.vbo is None:
             return
 
+        glPushMatrix()
+        glTranslatef(self.position[0] * self.size[0], self.position[1] * self.size[1], self.position[2] * self.size[2])
         glBindBuffer(GL_ARRAY_BUFFER, self.vbo)
         glEnableClientState(GL_VERTEX_ARRAY)
         glEnableClientState(GL_COLOR_ARRAY)
@@ -64,3 +66,4 @@ class Chunk:
         glDisableClientState(GL_COLOR_ARRAY)
         glDisableClientState(GL_VERTEX_ARRAY)
         glBindBuffer(GL_ARRAY_BUFFER, 0)
+        glPopMatrix()

@@ -16,6 +16,7 @@ CHUNK_MAX_HEIGHT = 32
 
 # World settings
 WORLD_SEED = 0
+RENDER_DISTANCE = 4  # Number of chunks to render in each direction
 
 # Noise settings
 NOISE_OCTAVES = 6
