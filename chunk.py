@@ -17,7 +17,6 @@ class Chunk:
         self.generate_vbo()
 
     def generate_voxels(self):
-        print(f"Generating voxels for chunk at {self.position}")
         for x in range(self.size[0]):
             for y in range(self.size[1]):
                 for z in range(self.size[2]):
@@ -27,6 +26,7 @@ class Chunk:
                     height = self.generate_height(world_x, world_z)
                     if world_y <= height:
                         self.voxels[x, y, z] = Voxel((x, y, z), self)
+                        self.voxel_count += 1
                     else:
                         self.voxels[x, y, z] = None
 
