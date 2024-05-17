@@ -2,11 +2,12 @@ from voxel import Voxel
 import numpy as np
 import noise
 from OpenGL.GL import *
+import settings
 
 class Chunk:
     def __init__(self, position, seed):
         self.position = position
-        self.size = (32, 32, 32)  # Set chunk size to 32x32x32
+        self.size = settings.CHUNK_SIZE  # Use chunk size from settings
         self.voxels = np.empty(self.size, dtype=object)
         self.seed = seed
         self.vertex_count = 0
@@ -30,9 +31,9 @@ class Chunk:
                         self.voxels[x, y, z] = None
 
     def generate_height(self, x, z):
-        scale = 100.0  # Adjust scale as needed
-        max_height = 32  # Maximum height of terrain
-        height = noise.pnoise2(x / scale, z / scale, octaves=6, persistence=0.5, lacunarity=2.0, repeatx=1024, repeaty=1024, base=self.seed)
+        scale = settings.CHUNK_HEIGHT_SCALE  # Use height scale from settings
+        max_height = settings.CHUNK_MAX_HEIGHT  # Use max height from settings
+        height = noise.pnoise2(x / scale, z / scale, octaves=settings.NOISE_OCTAVES, persistence=settings.NOISE_PERSISTENCE, lacunarity=settings.NOISE_LACUNARITY, repeatx=settings.NOISE_REPEAT, repeaty=settings.NOISE_REPEAT, base=self.seed)
         return int((height + 1) / 2 * max_height)  # Normalize to range [0, max_height]
 
     def generate_vbo(self):

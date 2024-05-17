@@ -5,6 +5,7 @@ from world import World
 import math
 import os
 import sys
+import settings
 
 
 def clear_console():
@@ -13,7 +14,7 @@ def clear_console():
 
 def main():
     pygame.init()
-    display = (800, 600)
+    display = (settings.DISPLAY_WIDTH, settings.DISPLAY_HEIGHT)
     pygame.display.set_mode(display, pygame.DOUBLEBUF | pygame.OPENGL | pygame.RESIZABLE)
     glEnable(GL_DEPTH_TEST)
 
@@ -24,7 +25,7 @@ def main():
     glLoadIdentity()
 
     # Camera variables
-    camera_pos = [0, 16, 30]  # Adjusted position to face the chunk
+    camera_pos = settings.CAMERA_START_POS[:]
     camera_rot = [0, 0]  # Rotation in pitch (up/down) and yaw (left/right)
 
     world = World()
@@ -32,8 +33,8 @@ def main():
     clock = pygame.time.Clock()
     pygame.mouse.set_visible(False)
     pygame.event.set_grab(True)
-    sensitivity = 0.1
-    move_speed = 0.5
+    sensitivity = settings.CAMERA_SENSITIVITY
+    move_speed = settings.CAMERA_MOVE_SPEED
     mouse_locked = True
 
     while True:
