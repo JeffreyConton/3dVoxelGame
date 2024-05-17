@@ -27,6 +27,7 @@ def main():
     pygame.mouse.set_visible(False)
     pygame.event.set_grab(True)
     sensitivity = 0.1
+    move_speed = 0.5
     mouse_locked = True
 
     while True:
@@ -47,26 +48,26 @@ def main():
 
         keys = pygame.key.get_pressed()
         if keys[pygame.K_w]:
-            camera_pos[2] -= 0.1 * math.cos(math.radians(camera_rot[1]))
-            camera_pos[0] += 0.1 * math.sin(math.radians(camera_rot[1]))
+            camera_pos[2] -= move_speed * math.cos(math.radians(camera_rot[1]))
+            camera_pos[0] += move_speed * math.sin(math.radians(camera_rot[1]))
         if keys[pygame.K_s]:
-            camera_pos[2] += 0.1 * math.cos(math.radians(camera_rot[1]))
-            camera_pos[0] -= 0.1 * math.sin(math.radians(camera_rot[1]))
+            camera_pos[2] += move_speed * math.cos(math.radians(camera_rot[1]))
+            camera_pos[0] -= move_speed * math.sin(math.radians(camera_rot[1]))
         if keys[pygame.K_a]:
-            camera_pos[2] -= 0.1 * math.sin(math.radians(camera_rot[1]))
-            camera_pos[0] -= 0.1 * math.cos(math.radians(camera_rot[1]))
+            camera_pos[2] -= move_speed * math.sin(math.radians(camera_rot[1]))
+            camera_pos[0] -= move_speed * math.cos(math.radians(camera_rot[1]))
         if keys[pygame.K_d]:
-            camera_pos[2] += 0.1 * math.sin(math.radians(camera_rot[1]))
-            camera_pos[0] += 0.1 * math.cos(math.radians(camera_rot[1]))
+            camera_pos[2] += move_speed * math.sin(math.radians(camera_rot[1]))
+            camera_pos[0] += move_speed * math.cos(math.radians(camera_rot[1]))
         if keys[pygame.K_SPACE]:
-            camera_pos[1] += 0.1
+            camera_pos[1] += move_speed
         if keys[pygame.K_LCTRL] or keys[pygame.K_RCTRL]:
-            camera_pos[1] -= 0.1
+            camera_pos[1] -= move_speed
 
         if mouse_locked:
             mouse_movement = pygame.mouse.get_rel()
             camera_rot[1] += mouse_movement[0] * sensitivity
-            camera_rot[0] -= mouse_movement[1] * sensitivity  # Invert the pitch movement
+            camera_rot[0] += mouse_movement[1] * sensitivity  # Correct the pitch movement direction
             camera_rot[0] = max(-90, min(90, camera_rot[0]))  # Clamp pitch
 
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)

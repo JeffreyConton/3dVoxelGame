@@ -2,15 +2,22 @@ from OpenGL.GL import *
 import random
 
 class Voxel:
-    def __init__(self, position):
+    def __init__(self, position, chunk):
         self.position = position
+        self.chunk = chunk
         self.colors = self.generate_random_pastel_colors()
 
     def generate_random_pastel_colors(self):
         def random_pastel_color():
             return [random.uniform(0.5, 1.0), random.uniform(0.5, 1.0), random.uniform(0.5, 1.0)]
-
         return [random_pastel_color() for _ in range(6)]
+
+    def is_exposed(self, neighbor):
+        x, y, z = self.position
+        nx, ny, nz = neighbor
+        if 0 <= nx < self.chunk.size[0] and 0 <= ny < self.chunk.size[1] and 0 <= nz < self.chunk.size[2]:
+            return self.chunk.voxels[nx, ny, nz] is None
+        return True
 
     def render(self):
         x, y, z = self.position
@@ -32,9 +39,16 @@ class Voxel:
             (20, 21, 22, 23)  # Top
         ]
 
+        neighbors = [
+            (x, y, z - 1), (x, y, z + 1),  # Front, Back
+            (x - 1, y, z), (x + 1, y, z),  # Left, Right
+            (x, y - 1, z), (x, y + 1, z)   # Bottom, Top
+        ]
+
         glBegin(GL_QUADS)
         for i, face in enumerate(faces):
-            glColor3f(*self.colors[i])
-            for vertex in face:
-                glVertex3fv(vertices[vertex])
+            if self.is_exposed(neighbors[i]):
+                glColor3f(*self.colors[i])
+                for vertex in face:
+                    glVertex3fv(vertices[vertex])
         glEnd()

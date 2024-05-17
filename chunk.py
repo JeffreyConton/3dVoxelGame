@@ -20,7 +20,7 @@ class Chunk:
                     world_z = z + self.position[2] * self.size[2]
                     height = self.generate_height(world_x, world_z)
                     if world_y <= height:
-                        self.voxels[x, y, z] = Voxel((world_x, world_y, world_z))
+                        self.voxels[x, y, z] = Voxel((x, y, z), self)
                     else:
                         self.voxels[x, y, z] = None
 
